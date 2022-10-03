@@ -1,39 +1,39 @@
 import { ColumnsType } from 'antd/lib/table';
 import { Criteria } from '../../../../../hooks/useProviderManageRewardPlan';
-import { Typography, Popconfirm } from 'antd';
+import { Typography } from 'antd';
 import { useState } from 'react';
-import { FormikValues } from 'formik';
+import { FormikProps } from 'formik';
 import { useManageRewardPlan } from '../../../../../hooks/useManageRewardPlan';
+import { notification } from 'antd';
 
 type Props = {
-  formikValues: FormikValues;
-  setFieldValue: any;
-}
+  formik: FormikProps<any>
+};
 
-export const useRevenueShareValuesTable = ({formikValues, setFieldValue}: Props) => {
+export const useRevenueShareValuesTable = ({
+  formik
+}: Props) => {
   const { criteria, setCriteria } = useManageRewardPlan();
 
   const [editingKey, setEditingKey] = useState<React.Key>();
-  const [editingRow, setEditingRow] = useState<React.Key>();
 
   const isEditing = (record: any) => record.key === editingKey;
 
   const handleRowSave = () => {
     const updatedCriteria = criteria.map((crit, index) => {
-      if(index === editingRow) {
+      if ('key_' + index === editingKey) {
         return {
           ...crit,
-          ...formikValues
+          ...formik.values,
         } as Criteria;
       }
 
-      return crit
+      return crit;
+    });
 
-    })
-
-    setCriteria(updatedCriteria)
+    setCriteria(updatedCriteria);
     setEditingKey(undefined);
-
+    formik.resetForm();
   }
 
   const columns: ColumnsType<Criteria> = [
@@ -68,53 +68,98 @@ export const useRevenueShareValuesTable = ({formikValues, setFieldValue}: Props)
       dataIndex: 'action',
       render: (_, record, index) => {
         const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link style={{ marginRight: 8 }} onClick={() => handleRowSave()}>Save</Typography.Link>
-            <Popconfirm title="Sure to cancel?">
-              Cancel
-            </Popconfirm>
+        if (editable) {
+          return (
+            <span>
+            <Typography.Link
+              style={{ marginRight: 8 }}
+              onClick={() => handleRowSave()}
+            >
+              Save
+            </Typography.Link>
           </span>
-        ) : (
+          )
+        }
+
+        if (index === 0) {
+          return (
+            <Typography.Link
+              onClick={() => {
+                setEditingKey((record as any)?.key);
+              }}
+            >
+              Edit
+            </Typography.Link>
+          );
+        }
+
+        return (
           <Typography.Link
-            // disabled={!editingKey}
-            onClick={() => {
-              setEditingKey((record as any)?.key);
-              setEditingRow(index)
-            }}
-          >
-            Edit
-          </Typography.Link>
-        );
+          disabled={!!editingKey}
+          onClick={() => {
+            setCriteria(prev => prev.filter((elem, EIndex) => EIndex !== index))
+          }}
+        >
+          Delete
+        </Typography.Link>
+        )
       },
     },
   ];
 
-  const mergedColumns = columns.map(col => {
-    if(col.key === 'action') {
-      return col
+  const setDataBasedOnPrevious = (prevProduct: Criteria, dataIndex: string) => {
+    if (dataIndex === 'product') {
+      formik.setFieldValue(
+        'from',
+        (parseInt(prevProduct.to, 10) + 0.1).toString()
+      );
     }
-  
+
+    if (dataIndex === 'criterion') {
+      formik.setFieldValue('criterion', prevProduct.criterion);
+    }
+  }
+
+  const mergedColumns = columns.map((col) => {
+    if (col.key === 'action') {
+      return col;
+    }
+
     return {
       ...col,
       onCell: (record: Criteria) => {
-        return ({
+        return {
           record,
           inputType: 'text',
           dataIndex: col.key,
           title: col.title?.toString(),
           editing: isEditing(record),
-          setFieldValue: setFieldValue
-        })
+          value: formik.values[col.key!],
+          errorMsg: formik.touched[col.key!] ?  formik.errors[col.key!] : '',
+          setFieldValue: formik.setFieldValue,
+          setFieldTouched: formik.setFieldTouched,
+          handleBlur: (dataIndex: string, inputValue: string) => {
+            const prevProduct = criteria.find(
+              (critElem) => critElem.product === inputValue
+            );
+
+            if (prevProduct) setDataBasedOnPrevious(prevProduct, dataIndex)
+
+            if (inputValue === '100' && dataIndex === 'percantage') {
+              notification.warning({
+                message: '100% has been set.',
+              });
+            }
+          },
+        };
       },
     };
   });
 
-
-
   return {
     columns: mergedColumns,
-    setEditingRow,
-    criteria
-  }
-}
+    setEditingKey,
+    criteria,
+    disableAddingItem: editingKey !== undefined && criteria.length > 0
+  };
+};

@@ -1,4 +1,3 @@
-import React from 'react';
 import 'antd/dist/antd.min.css';
 import './App.css';
 import { Layout } from 'antd';
@@ -21,7 +20,6 @@ function App() {
           }}
         >
           <ManageRewardPage />
-          
         </Content>
       </Layout>
     </Layout>

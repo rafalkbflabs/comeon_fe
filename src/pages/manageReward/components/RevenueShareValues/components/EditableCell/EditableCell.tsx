@@ -9,6 +9,10 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   index: number;
   children: React.ReactNode;
   setFieldValue: any;
+  setFieldTouched: (field: string, isTouched: boolean, shouldValidate: boolean) => void;
+  handleBlur: (dataIndex: string, value: string) => void;
+  errorMsg?: string;
+  value: string;
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({
@@ -20,6 +24,10 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   index,
   children,
   setFieldValue,
+  setFieldTouched,
+  errorMsg,
+  handleBlur,
+  value,
   ...restProps
 }) => {
 
@@ -28,11 +36,19 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   }
   
   const inputNode =
+  <>
       <Input
         name={dataIndex}
-        onChange={(e) => setFieldValue(dataIndex, e.currentTarget.value)}
+        onChange={(e) => {
+          setFieldValue(dataIndex, e.currentTarget.value);
+          setFieldTouched(dataIndex, true, false);
+        }}
+        onBlur={(e) => handleBlur(dataIndex, e.currentTarget.value)}
         defaultValue={ (record as any)[dataIndex] || ''}
+        value={value}
       />
+      {errorMsg && <p>{errorMsg}</p>}
+    </>
 
   return <td {...restProps}>{editing ? inputNode : children}</td>;
 };
