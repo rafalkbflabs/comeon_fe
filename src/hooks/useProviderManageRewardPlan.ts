@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-type Criteria = {
+export type Criteria = {
   product:  string;
   from: string;
   to: string;
