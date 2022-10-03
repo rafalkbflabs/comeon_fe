@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { FormikProps } from 'formik';
 import { useManageRewardPlan } from '../../../../../hooks/useManageRewardPlan';
 import { notification } from 'antd';
+import currencyFormatter from '../../../../../helpers/currencyFormatter';
 
 type Props = {
   formik: FormikProps<any>
@@ -46,11 +47,13 @@ export const useRevenueShareValuesTable = ({
       title: 'Threshold from',
       dataIndex: 'from',
       key: 'from',
+      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
     },
     {
       title: 'Threshold to',
       dataIndex: 'to',
       key: 'to',
+      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
     },
     {
       title: 'Criteria',
@@ -74,6 +77,7 @@ export const useRevenueShareValuesTable = ({
             <Typography.Link
               style={{ marginRight: 8 }}
               onClick={() => handleRowSave()}
+              disabled={!formik.isValid}
             >
               Save
             </Typography.Link>
@@ -85,6 +89,7 @@ export const useRevenueShareValuesTable = ({
           return (
             <Typography.Link
               onClick={() => {
+                formik.setValues({...criteria[0]})
                 setEditingKey((record as any)?.key);
               }}
             >
