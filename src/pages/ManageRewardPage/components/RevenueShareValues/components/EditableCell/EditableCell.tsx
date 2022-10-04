@@ -9,7 +9,6 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   record: Criteria & { [key: string]: string };
   index: number;
   children: React.ReactNode;
-  setFieldValue: any;
   onChange: (e: React.ChangeEvent<HTMLElement>) => void;
   errorMsg?: string;
   value: string;
@@ -21,7 +20,6 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   record,
   index,
   children,
-  setFieldValue,
   errorMsg,
   onChange,
   value,

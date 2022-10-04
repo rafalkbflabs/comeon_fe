@@ -11,7 +11,7 @@ type Props = {
   formik: FormikProps<any>
 };
 
-interface CriteriaRecord extends Criteria { key: string;}
+interface CriteriaRow extends Criteria {key: string}
 
 export const useRevenueShareValuesTable = ({
   formik
@@ -25,13 +25,13 @@ export const useRevenueShareValuesTable = ({
 
   useEffect(() => {
     const prevProduct = criteria.find(
-      (critElem) => product !== '' && (critElem.product === product )
+      (critElem) => product !== '' && critElem.product === product
     );
 
     if (prevProduct) {
       setFieldValue(
         'from',
-        (parseFloat(prevProduct.to) + 0.01).toString()
+        (parseInt(prevProduct.to, 10) + 0.01).toString()
       );
       setFieldValue('criterion', prevProduct.criterion);
       setCriterionEditable(false)
@@ -52,9 +52,9 @@ export const useRevenueShareValuesTable = ({
       const {criterion, ...rest} = errors;
       setErrors({...rest})
     }
-  }, [criterion, setErrors, criterionEditable, errors, product, criteria])
+  }, [criterion, setErrors, criterionEditable, errors, product, criteria ])
 
-  const isEditing = (record: any) => record.key === editingKey;
+  const isEditing = (record: CriteriaRow) => record.key === editingKey;
 
   const handleRowSave = () => {
     const updatedCriteria = criteria.map((crit, index) => {
@@ -73,7 +73,7 @@ export const useRevenueShareValuesTable = ({
     formik.resetForm();
   }
 
-  const columns: ColumnsType<CriteriaRecord> = [
+  const columns: ColumnsType<CriteriaRow> = [
     {
       title: 'Product',
       dataIndex: 'product',
@@ -84,14 +84,14 @@ export const useRevenueShareValuesTable = ({
       title: 'Threshold from',
       dataIndex: 'from',
       key: 'from',
-      render: (value: string) => currencyFormatter.format(parseFloat(value)),
+      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
       width: 10,
     },
     {
       title: 'Threshold to',
       dataIndex: 'to',
       key: 'to',
-      render: (value: string) => currencyFormatter.format(parseFloat(value)),
+      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
       width: 10,
     },
     {
@@ -165,11 +165,10 @@ export const useRevenueShareValuesTable = ({
 
     return {
       ...col,
-      onCell: (record: Criteria) => {
+      onCell: (record: CriteriaRow) => {
         return {
           record,
           dataIndex: col.key,
-          title: col.title?.toString(),
           editing: isEditing(record),
           value: formik.values[col.key!],
           errorMsg: formik.touched[col.key!] ?  formik.errors[col.key!] : '',

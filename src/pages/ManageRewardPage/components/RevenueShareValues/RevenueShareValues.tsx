@@ -22,7 +22,7 @@ export const RevenueShareValues = () => {
   const formik = useFormik({
     initialValues: formInitialValues,
     validationSchema,
-    onSubmit: (v) => {},
+    onSubmit: () => {},
   });
 
   const {
@@ -34,7 +34,7 @@ export const RevenueShareValues = () => {
     formik,
   });
 
-  const test = () => {
+  const addNewRow = () => {
     setCriteria(() => [formInitialValues, ...criteria]);
     setEditingKey('key_0');
   };
@@ -45,7 +45,7 @@ export const RevenueShareValues = () => {
         header={
           <div className="revenue-share-values-header">
             <span>Revenue share values</span>
-            <Button onClick={test} disabled={disableAddingItem} icon={<PlusCircleOutlined />} />
+            <Button onClick={addNewRow} disabled={disableAddingItem} icon={<PlusCircleOutlined />} />
           </div>
         }
       >
