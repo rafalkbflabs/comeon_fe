@@ -31,7 +31,7 @@ export const useRevenueShareValuesTable = ({
     if (prevProduct) {
       setFieldValue(
         'from',
-        (parseInt(prevProduct.to, 10) + 0.01).toString()
+        (parseFloat(prevProduct.to) + 0.01).toString()
       );
       setFieldValue('criterion', prevProduct.criterion);
       setCriterionEditable(false)
@@ -88,14 +88,14 @@ export const useRevenueShareValuesTable = ({
       title: 'Threshold from',
       dataIndex: 'from',
       key: 'from',
-      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
+      render: (value: string) => currencyFormatter.format(parseFloat(value)),
       width: 10,
     },
     {
       title: 'Threshold to',
       dataIndex: 'to',
       key: 'to',
-      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
+      render: (value: string) => currencyFormatter.format(parseFloat(value)),
       width: 10,
     },
     {
