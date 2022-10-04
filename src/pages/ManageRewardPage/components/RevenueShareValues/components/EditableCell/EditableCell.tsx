@@ -37,8 +37,9 @@ export const EditableCell: React.FC<EditableCellProps> = ({
         onChange={onChange}
         defaultValue={ record[dataIndex] || ''}
         value={value}
+        data-testid={dataIndex}
       />
-      {errorMsg && <span className='input-wrapper-error'>{errorMsg}</span>}
+      {errorMsg && <span data-testid={`error-${dataIndex}`} className='input-wrapper-error'>{errorMsg}</span>}
     </div>
 
   return <td {...restProps}>{editing ? inputNode : children}</td>;

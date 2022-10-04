@@ -129,6 +129,7 @@ export const useRevenueShareValuesTable = ({
               style={{ marginRight: 8 }}
               onClick={() => handleRowSave()}
               disabled={!formik.isValid}
+              data-testid="save-row"
             >
               Save
             </Typography.Link>

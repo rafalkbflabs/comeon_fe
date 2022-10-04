@@ -10,7 +10,7 @@ export const ManageRewardContext = createContext<ManageRewardContextData | null>
   null
 );
 
-const ManageRewardProvider = ({ children }: { children: React.ReactNode }) => {
+export const ManageRewardProvider = ({ children }: { children: React.ReactNode }) => {
   const value = useProviderManageRewardPlan();
 
   return (

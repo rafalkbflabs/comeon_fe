@@ -1,5 +1,5 @@
 import { useRevenueShareValuesTable } from './useRevenueShareValuesTable';
-import { act, renderHook } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useFormik } from 'formik';
 import { ManageRewardProvider } from '../../../ManageRewardPage';
 
@@ -13,7 +13,7 @@ describe('useRevenueShareValuesTable', () => {
   };
 
   it('should throw an error if hook has been called outside provider', () => {
-    const { result: result2 } = renderHook(() =>
+    const { result: formikResult } = renderHook(() =>
       useFormik({
         initialValues: formInitialValues,
         onSubmit: () => {},
@@ -21,7 +21,7 @@ describe('useRevenueShareValuesTable', () => {
     );
 
     expect(() => {
-      renderHook(() => useRevenueShareValuesTable({ formik: result2.current }));
+      renderHook(() => useRevenueShareValuesTable({ formik: formikResult.current }));
     }).toThrow(
       Error('useManageRewardPlan must be used inside ManageRewardProvider')
     );

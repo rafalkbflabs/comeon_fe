@@ -45,7 +45,7 @@ export const RevenueShareValues = () => {
         header={
           <div className="revenue-share-values-header">
             <span>Revenue share values</span>
-            <Button onClick={addNewRow} disabled={disableAddingItem} icon={<PlusCircleOutlined />} />
+            <Button onClick={addNewRow} disabled={disableAddingItem} icon={<PlusCircleOutlined />} data-testid="add-new-item" />
           </div>
         }
       >
