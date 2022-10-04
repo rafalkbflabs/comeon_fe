@@ -1,8 +1,10 @@
-import React, { createContext, useContext } from 'react';
+import { Button } from 'antd';
+import React, { createContext } from 'react';
 import { useManageRewardPlan } from '../../hooks/useManageRewardPlan';
 import { useProviderManageRewardPlan } from '../../hooks/useProviderManageRewardPlan';
 import { BasicDataForm } from './components/BasicDataForm/BasicDataForm';
 import { RevenueShareValues } from './components/RevenueShareValues/RevenueShareValues';
+import './ManageRewardPageStyles.less';
 
 export const ManageRewardContext = createContext<ManageRewardContextData | null>(
   null
@@ -49,16 +51,12 @@ const ManageRewardPageWrapper = () => {
   };
 
   return (
-    <>
+    <div className='manage-reward-page'>
       <BasicDataForm />
       <RevenueShareValues />
-      <button
-        type="button"
-        onClick={() => sendData()}
-        disabled={isDataEmpty}
-      >
+      <Button type="default" className='send-data' onClick={() => sendData()} disabled={isDataEmpty}>
         Send Data
-      </button>
-    </>
+      </Button>
+    </div>
   );
 };

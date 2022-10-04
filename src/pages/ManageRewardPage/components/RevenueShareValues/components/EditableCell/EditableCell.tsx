@@ -1,16 +1,16 @@
-import { Form, Input, InputNumber } from 'antd';
+import { Input } from 'antd';
+import React from 'react';
 import { Criteria } from '../../../../../../hooks/useProviderManageRewardPlan';
+import './EditableCellStyles.less';
+
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
-  title: any;
-  inputType: 'number' | 'text';
   record: Criteria & { key: string };
   index: number;
   children: React.ReactNode;
   setFieldValue: any;
-  setFieldTouched: (field: string, isTouched: boolean, shouldValidate: boolean) => void;
-  handleBlur: (dataIndex: string, value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLElement>) => void;
   errorMsg?: string;
   value: string;
 }
@@ -18,15 +18,12 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
 export const EditableCell: React.FC<EditableCellProps> = ({
   editing,
   dataIndex,
-  title,
-  inputType,
   record,
   index,
   children,
   setFieldValue,
-  setFieldTouched,
   errorMsg,
-  handleBlur,
+  onChange,
   value,
   ...restProps
 }) => {
@@ -34,21 +31,17 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   if(!editing || !dataIndex || !record) {
     return <td {...restProps}>{children}</td>;
   }
-  
+
   const inputNode =
-  <>
+  <div className='input-wrapper'>
       <Input
         name={dataIndex}
-        onChange={(e) => {
-          setFieldValue(dataIndex, e.currentTarget.value);
-          setFieldTouched(dataIndex, true, false);
-        }}
-        onBlur={(e) => handleBlur(dataIndex, e.currentTarget.value)}
+        onChange={onChange}
         defaultValue={ (record as any)[dataIndex] || ''}
         value={value}
       />
-      {errorMsg && <p>{errorMsg}</p>}
-    </>
+      {errorMsg && <span className='input-wrapper-error'>{errorMsg}</span>}
+    </div>
 
   return <td {...restProps}>{editing ? inputNode : children}</td>;
 };

@@ -1,0 +1,43 @@
+@import '~antd/es/style/themes/default.less';
+
+.revenue-share-values {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .ant-btn {
+      border: none;
+      background-color: @green-6;
+      color: @gray-1;
+    }
+  }
+
+  .table-striped-rows {
+    tr:nth-child(2n) td {
+      background-color: @gray-3;
+    }
+
+    thead {
+      background-color: @gray-1;
+    }
+
+    button {
+      border: none;
+      background-color: transparent;
+    }
+
+    .remove-row-button {
+      background-color: @red-5;
+      color: @gray-1;
+    }
+
+    .edit-row-button {
+      color: @blue-8;
+    }
+  } 
+
+  .ant-empty {
+    margin: 40px 20px 20px;
+  }
+}

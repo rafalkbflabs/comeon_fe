@@ -1,0 +1,34 @@
+@import '~antd/es/style/themes/default.less';
+
+.basic-data-form {
+
+  .ant-row {
+    margin: 20px auto;
+  }
+
+  .label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .label-text {
+      width: 100px;
+      margin-right: 20px;
+    };
+
+    input {
+      width: auto;
+    }
+  }
+
+  .checkbox {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+
+    > span:last-of-type {
+      padding: 0;
+      width: 100px;
+      margin-right: 20px;
+    }
+  }
+}

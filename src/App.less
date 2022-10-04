@@ -1,0 +1,50 @@
+@import '~antd/dist/antd.less';
+@import '~antd/es/style/themes/default.less';
+
+.ant-layout {
+  background-color: @gray-4;
+
+  &-header {
+    color: @cyan-5;
+    background-color: @gray-2;
+    position: relative;
+    box-shadow: 10px 5px 5px @gray-5;
+    font-size: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }
+
+  &-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  button[type='submit'],
+  .send-data {
+    background-color: @green-6;
+    color: @gray-1;
+    border: 1px solid @gray-5;
+
+    &:hover {
+      opacity: .9;
+    }
+
+    &:disabled {
+      background-color: @gray-1;
+      color: @gray-5;
+    }
+  }
+}
+
+.ant-input, .ant-checkbox-input {
+  border: 1px solid @gray-5;
+  outline: 0;
+
+  &:focus {
+    border-color: @gray-5;
+    outline: 0;
+    box-shadow: none;
+  }
+}
