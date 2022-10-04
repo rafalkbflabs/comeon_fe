@@ -1,6 +1,6 @@
 import { ColumnsType } from 'antd/lib/table';
 import { Criteria } from '../../../../../hooks/useProviderManageRewardPlan';
-import { Button, Typography } from 'antd';
+import { Button, notification, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormikProps } from 'formik';
 import { useManageRewardPlan } from '../../../../../hooks/useManageRewardPlan';
@@ -67,6 +67,10 @@ export const useRevenueShareValuesTable = ({
 
       return crit;
     });
+
+    if (parseFloat(formik.values.percantage) === 100) {
+      notification.warning({ message: '100% has been set'})
+    }
 
     setCriteria(updatedCriteria);
     setEditingKey(undefined);
