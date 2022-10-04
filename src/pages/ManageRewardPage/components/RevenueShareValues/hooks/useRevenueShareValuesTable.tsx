@@ -4,7 +4,6 @@ import { Button, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormikProps } from 'formik';
 import { useManageRewardPlan } from '../../../../../hooks/useManageRewardPlan';
-import { notification } from 'antd';
 import currencyFormatter from '../../../../../helpers/currencyFormatter';
 import { EditOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
@@ -23,17 +22,14 @@ export const useRevenueShareValuesTable = ({
   const {values: {product, criterion}, errors, setFieldValue, setErrors} = formik;
 
   useEffect(() => {
-    if (criteria.length === 0 ) return;
-
     const prevProduct = criteria.find(
-      (critElem) => critElem.product === product
+      (critElem) => product !== '' && (critElem.product === product )
     );
 
     if (prevProduct) {
-      console.log('elo')
       setFieldValue(
         'from',
-        (parseInt(prevProduct.to, 10) + 0.01).toString()
+        (parseFloat(prevProduct.to) + 0.01).toString()
       );
       setFieldValue('criterion', prevProduct.criterion);
       setCriterionEditable(false)
@@ -86,14 +82,14 @@ export const useRevenueShareValuesTable = ({
       title: 'Threshold from',
       dataIndex: 'from',
       key: 'from',
-      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
+      render: (value: string) => currencyFormatter.format(parseFloat(value)),
       width: 10,
     },
     {
       title: 'Threshold to',
       dataIndex: 'to',
       key: 'to',
-      render: (value: string) => currencyFormatter.format(parseInt(value, 10)),
+      render: (value: string) => currencyFormatter.format(parseFloat(value)),
       width: 10,
     },
     {

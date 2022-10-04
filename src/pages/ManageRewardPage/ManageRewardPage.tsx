@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Col, Row } from 'antd';
 import React, { createContext } from 'react';
 import { useManageRewardPlan } from '../../hooks/useManageRewardPlan';
 import { useProviderManageRewardPlan } from '../../hooks/useProviderManageRewardPlan';
@@ -41,22 +41,35 @@ const ManageRewardPageWrapper = () => {
   const isDataEmpty = name === '' || criteria.length === 0;
 
   const sendData = async () => {
-    await fetch('https://example.com/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ data }),
-    });
+    try {
+      await fetch('https://example.com/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data }),
+      });
+    } catch (e) {
+      alert(JSON.stringify({ data }));
+    }
   };
 
   return (
-    <div className='manage-reward-page'>
+    <div className="manage-reward-page">
       <BasicDataForm />
       <RevenueShareValues />
-      <Button type="default" className='send-data' onClick={() => sendData()} disabled={isDataEmpty}>
-        Send Data
-      </Button>
+      <Row>
+        <Col span={6} offset={22}>
+          <Button
+            type="default"
+            className="send-data"
+            onClick={() => sendData()}
+            disabled={isDataEmpty}
+          >
+            Send Data
+          </Button>
+        </Col>
+      </Row>
     </div>
   );
 };
