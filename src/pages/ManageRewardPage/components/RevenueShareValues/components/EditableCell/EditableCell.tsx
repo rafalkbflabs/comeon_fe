@@ -6,7 +6,7 @@ import './EditableCellStyles.less';
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
-  record: Criteria & { key: string };
+  record: Criteria & { [key: string]: string };
   index: number;
   children: React.ReactNode;
   setFieldValue: any;
@@ -37,7 +37,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
       <Input
         name={dataIndex}
         onChange={onChange}
-        defaultValue={ (record as any)[dataIndex] || ''}
+        defaultValue={ record[dataIndex] || ''}
         value={value}
       />
       {errorMsg && <span className='input-wrapper-error'>{errorMsg}</span>}

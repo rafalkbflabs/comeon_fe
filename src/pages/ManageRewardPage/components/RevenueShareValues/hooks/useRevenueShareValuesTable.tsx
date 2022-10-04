@@ -11,6 +11,8 @@ type Props = {
   formik: FormikProps<any>
 };
 
+interface CriteriaRecord extends Criteria { key: string;}
+
 export const useRevenueShareValuesTable = ({
   formik
 }: Props) => {
@@ -71,7 +73,7 @@ export const useRevenueShareValuesTable = ({
     formik.resetForm();
   }
 
-  const columns: ColumnsType<Criteria> = [
+  const columns: ColumnsType<CriteriaRecord> = [
     {
       title: 'Product',
       dataIndex: 'product',
@@ -135,7 +137,7 @@ export const useRevenueShareValuesTable = ({
               className='edit-row-button'
               onClick={() => {
                 formik.setValues({...criteria[0]})
-                setEditingKey((record as any)?.key);
+                setEditingKey(record.key);
               }}
               icon={<EditOutlined />}
             />
